@@ -16,6 +16,20 @@ const getContas = (request, response) => {
     })
 }
 
+const getItens = (request, response) => {
+    pool.query('SELECT * FROM item INNER JOIN mercador ON item.id_item = mercador.item_id WHERE temporada_id = 1;', (error, results) => {
+        if (error) {
+            throw error
+        }
+        pool.query('INSERT INTO Inventario (id_item, id_time, quantidade) VALUES (1, 1, 2);', (error, results) => {
+            if (error) {
+                throw error
+            }
+            response.status(200).json(results.rows)
+        })
+    })
+}
+
 const getTimeByNome = (request, response) => {
     const id = request.params.id
 
@@ -118,5 +132,6 @@ module.exports = {
     deleteConta,
     createTime,
     getContaByTime,
-    getTimeByNome
+    getTimeByNome,
+    getItens
 }

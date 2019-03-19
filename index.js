@@ -20,6 +20,7 @@ app.get('/', (request, response) => {
 })
 
 app.get('/conta', db.getContas)
+app.get('/mercador', db.getItens)
 app.get('/conta/:time', db.getContaByTime)
 app.post('/conta', db.createConta)
 app.post('/time', db.createTime)
