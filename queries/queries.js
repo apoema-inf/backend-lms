@@ -21,19 +21,44 @@ const getItens = (request, response) => {
         if (error) {
             throw error
         }
-        pool.query('INSERT INTO Inventario (id_item, id_time, quantidade) VALUES (1, 1, 2);', (error, results) => {
-            if (error) {
-                throw error
-            }
-            response.status(200).json(results.rows)
-        })
+        response.status(200).json(results.rows)
+    })
+}
+
+
+const setInventario = (request, response) => {
+    const quantidade = request.body.quantidade;
+    const time_id = request.body.time_id;
+    const item_id = request.body.item_id;
+
+    pool.query('INSERT INTO inventario (time_id, quantidade, item_id) VALUES ($1, $2, $3)', [time_id, quantidade, item_id], (error, results) => {
+        if (error) {
+            throw error
+        }
+        response.status(200).json(results.rows)
+    })
+}
+
+const setExtrato = (request, response) => {
+    const tipo = request.body.tipo;
+    const conta_id = request.body.conta_id;
+    const usuario_id = request.body.usuario_id;
+    const date = request.body.date;
+    const valor = request.body.valor;
+    console.log(request.body);
+
+    pool.query('INSERT INTO historico (conta_id, tipo, usuario_id, data, valor) VALUES ($1, $2, $3, $4, $5)', [conta_id, tipo, usuario_id, date, valor], (error, results) => {
+        if (error) {
+            throw error
+        }
+        response.status(200).json(results.rows)
     })
 }
 
 const getTimeByNome = (request, response) => {
     const id = request.params.id
 
-    pool.query('SELECT nome FROM time WHERE nome = $1', [id], (error, results) => {
+    pool.query('SELECT * FROM time WHERE nome = $1', [id], (error, results) => {
         if (error) {
             throw error
         }
@@ -133,5 +158,7 @@ module.exports = {
     createTime,
     getContaByTime,
     getTimeByNome,
-    getItens
+    getItens,
+    setInventario,
+    setExtrato
 }
